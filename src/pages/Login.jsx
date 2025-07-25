@@ -1,7 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { login } from "../slices/authSlice";
 import { Lock, User } from "lucide-react";
 
 export default function LoginPage() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.auth);
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const { email, password } = formData;
+
+  const handleOnChange = (e) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+    dispatch(login({ email, password, navigate }));
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-4xl bg-white rounded-2xl shadow-xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
@@ -38,18 +64,22 @@ export default function LoginPage() {
               Sign in to your account
             </p>
 
-            <form className="space-y-4">
-              {/* Username */}
+            <form className="space-y-4 text-black" onSubmit={handleOnSubmit}>
+              {/* Email Address */}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Username
+                <label className="block text-sm  font-medium text-gray-700">
+                  Email Address
                 </label>
                 <div className="flex items-center border rounded-md px-3 mt-1">
                   <User className="text-blue-400 w-4 h-4 mr-2" />
                   <input
-                    type="text"
+                    required
+                    type="email"
+                    name="email"
+                    value={email}
+                    onChange={handleOnChange}
                     className="w-full border-none focus:ring-0 focus:outline-none py-2"
-                    placeholder="admin"
+                    placeholder="admin@example.com"
                   />
                 </div>
               </div>
@@ -62,7 +92,11 @@ export default function LoginPage() {
                 <div className="flex items-center border rounded-md px-3 mt-1">
                   <Lock className="text-blue-400 w-4 h-4 mr-2" />
                   <input
+                    required
                     type="password"
+                    name="password"
+                    value={password}
+                    onChange={handleOnChange}
                     className="w-full border-none focus:ring-0 focus:outline-none py-2"
                     placeholder="••••••"
                   />
@@ -72,9 +106,10 @@ export default function LoginPage() {
               {/* Submit */}
               <button
                 type="submit"
-                className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+                disabled={loading}
+                className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition disabled:bg-gray-400"
               >
-                Sign In
+                {loading ? "Signing In..." : "Sign In"}
               </button>
             </form>
 
@@ -97,4 +132,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
