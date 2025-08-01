@@ -19,7 +19,7 @@ import { PATH } from "./common/constant.js";
 import Attendance from "./pages/admin/Attendance.jsx";
 
 export default function App() {
-  console.log(PATH.ADMIN_OVERVIEW);
+
   return (
     <>
       <Router>

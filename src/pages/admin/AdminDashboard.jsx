@@ -16,8 +16,12 @@ import {
 const AdminDashboard = () => {
   return (
     <div className="relative flex min-h-[calc(100vh-3.5rem)] bg-gray-100">
-      <AdminSidebar />
-      <div className="h-full flex-1 overflow-auto bg-gray-100 text-gray-800">
+      <div className="flex h-screen overflow-hidden">
+        <div className="w-64 fixed top-0 left-0 h-full bg-white shadow-lg z-50 overflow-y-auto">
+          <AdminSidebar />
+        </div>
+      </div>
+      <div className="h-full flex-1 overflow-auto bg-gray-100 text-gray-800 ml-60">
         <div className="mx-auto w-11/12 max-w-[1000px] py-36">
           <div>
             <Outlet />

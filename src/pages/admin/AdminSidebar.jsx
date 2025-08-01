@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { logout } from "../../slices/authSlice";
-import { PATH } from "../../common/constant";
 import {
   LayoutDashboard,
   Users,
@@ -18,6 +17,8 @@ import {
   ReceiptIndianRupee,
   UserSearch,
   ChevronRight,
+  ChevronDown,
+  Building2,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
 
@@ -25,95 +26,115 @@ const sidebarLinks = [
   { id: 1, name: "Dashboard", path: "/admin/overview", icon: LayoutDashboard },
   { id: 2, name: "Employees", path: "/admin/employees", icon: Users },
   { id: 3, name: "Attendance", path: "/admin/attendance", icon: ClipboardList },
-  { id: 4, name: "Settings", path: "/admin/settings", icon: Settings },
+
   {
     id: 5,
-    name: "staff",
-    path: `${PATH.ADMIN_STAFF}`,
+    name: "Staff",
     icon: Users,
-    action: "staff",
+    children: [
+      { name: "User", path: "/admin/staff/user" },
+      { name: "Role", path: "/admin/staff/role" },
+      { name: "Employee Profile", path: "/admin/staff/employee" },
+    ],
   },
   {
     id: 6,
-    name: "payslip",
-    path: "/admin/payslip",
+    name: "Payslip",
     icon: ReceiptIndianRupee,
-    action: "payslip",
+    children: [
+      { name: "Set Salary", path: "/admin/payslip/set-salary" },
+      { name: "Generate", path: "/admin/payslip/generate" },
+    ],
   },
   {
     id: 7,
-    name: "timesheet",
-    path: "/admin/timesheet",
+    name: "Timesheet",
     icon: Timer,
-    action: "timesheet",
+    // path: "/admin/timesheet",
+    children: [
+      { name: "Timesheet", path: "/admin/attendance/attendance " },
+      { name: "Attendance", path: "/admin/timesheet/attendance" },
+      { name: "Manage Leave", path: "/admin/timesheet/manageleave" },
+    ],
   },
   {
     id: 8,
     name: "Finance",
     icon: IndianRupee,
-    path: "/admin/Finance",
-    action: "Finance",
+    children: [{ name: "Account List", path: "/admin/finance/accountlist" }],
   },
   {
     id: 9,
-    name: "Hr Management",
+    name: "HR Admin Setup",
     icon: ShieldUser,
     path: "/admin/hr",
-    action: "Hr Management",
   },
   {
     id: 10,
     name: "Recruitment",
     icon: UserSearch,
-    path: "/admin/Recruitment",
-    action: "Recruitment",
+    path: "/admin/recruitment",
   },
-
   {
     id: 11,
     name: "Documents",
     icon: FileText,
-    path: "/admin/Documents",
-    action: "Documents",
+    path: "/admin/documents",
   },
-
   {
     id: 12,
-    name: "messenger",
+    name: "Messenger",
     icon: Mail,
     path: "/admin/messenger",
-    action: "messenger",
-    icons: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        classN="lucide lucide-chevron-right-icon lucide-chevron-right"
-      >
-        <path d="m9 18 6-6-6-6" />
-      </svg>
-    ),
   },
   {
     id: 13,
-    name: "ticket",
+    name: "Tickets",
     icon: Tickets,
     path: "/admin/ticket",
-    action: "ticket",
+  },
+
+  { id: 14, name: "Settings", path: "/admin/settings", icon: Settings },
+  {
+    id: 4,
+    name: "Company policy",
+    icon: Building2,
+    path: "/admin/companypolicy",
   },
 ];
 
 export default function AdminSidebar() {
-  // const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [openMenus, setOpenMenus] = useState({});
 
+  // Auto-expand submenu based on route
+  useEffect(() => {
+    const expanded = {};
+    sidebarLinks.forEach((link) => {
+      if (link.children) {
+        expanded[link.name] = link.children.some((child) =>
+          location.pathname.startsWith(child.path)
+        );
+      }
+    });
+    setOpenMenus(expanded);
+  }, [location.pathname]);
+
+  // *******************************
+  //*     toggle menu
+  //*
+  // *******************************
+
+  const toggleMenu = (name) => {
+    setOpenMenus((prev) => ({ ...prev, [name]: !prev[name] }));
+  };
+
+  // *******************************
+  //*    Logout
+  //*
+  // *******************************
   const handleLogout = () => {
     dispatch(logout());
     toast.success("Logged Out");
@@ -121,25 +142,69 @@ export default function AdminSidebar() {
   };
 
   return (
-    <div className="w-64 bg-blue-800 text-white flex flex-col p-4 v">
+    <div className="w-64 bg-blue-800 text-white flex flex-col p-4 h-screen">
       <div className="text-2xl font-bold mb-10">Admin Panel</div>
-      <nav className="flex flex-col space-y-2">
-        {sidebarLinks.map((link) => (
-          <NavLink
-            key={link.id}
-            to={link.path}
-            className={({ isActive }) =>
-              `flex items-center p-2 rounded-md transition-colors ${
-                isActive ? "bg-orange-500" : "hover:bg-blue-700"
-              }`
-            }
-          >
-            <link.icon className="w-5 h-5 mr-3" />
-            {link.name}
-          </NavLink>
-        ))}
+      <nav className="flex flex-col space-y-2 overflow-y-auto flex-1">
+        {sidebarLinks.map((link) => {
+          const isParent = !!link.children;
+
+          if (isParent) {
+            return (
+              <div key={link.id}>
+                <button
+                  onClick={() => toggleMenu(link.name)}
+                  className="flex items-center justify-between w-full p-2 rounded-md hover:bg-blue-700"
+                >
+                  <div className="flex items-center">
+                    <link.icon className="w-5 h-5 mr-3" />
+                    {link.name}
+                  </div>
+                  {openMenus[link.name] ? (
+                    <ChevronDown className="w-4 h-4" />
+                  ) : (
+                    <ChevronRight className="w-4 h-4" />
+                  )}
+                </button>
+                {openMenus[link.name] && (
+                  <div className="ml-6 mt-1 space-y-1">
+                    {link.children.map((child, idx) => (
+                      <NavLink
+                        key={idx}
+                        to={child.path}
+                        className={({ isActive }) =>
+                          `block p-2 rounded-md text-sm ${
+                            isActive ? "bg-orange-500" : "hover:bg-blue-700"
+                          }`
+                        }
+                      >
+                        {child.name}
+                      </NavLink>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          }
+
+          return (
+            <NavLink
+              key={link.id}
+              to={link.path}
+              className={({ isActive }) =>
+                `flex items-center p-2 rounded-md transition-colors ${
+                  isActive ? "bg-orange-500" : "hover:bg-blue-700"
+                }`
+              }
+            >
+              <link.icon className="w-5 h-5 mr-3" />
+              {link.name}
+            </NavLink>
+          );
+        })}
       </nav>
-      <div className="mt-auto">
+
+      {/* 🔴 Logout at Bottom */}
+      <div className="mt-4 border-t border-blue-600 pt-4">
         <button
           onClick={handleLogout}
           className="w-full flex items-center p-2 rounded-md text-left hover:bg-red-600 transition-colors"
