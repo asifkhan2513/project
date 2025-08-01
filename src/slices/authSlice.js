@@ -3,10 +3,12 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 
 // Define the base URL for your backend API
-const BASE_URL = "http://localhost:5000/api/v1"; 
+const BASE_URL = "http://localhost:5000/api/v1";
 
 const initialState = {
-  user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null,
+  user: localStorage.getItem("user")
+    ? JSON.parse(localStorage.getItem("user"))
+    : null,
   token: localStorage.getItem("token") || null,
   loading: false,
   error: null,
@@ -17,7 +19,6 @@ export const login = createAsyncThunk(
   "auth/login",
   async ({ email, password, navigate }, { rejectWithValue }) => {
     try {
-      
       // Make the API call to your backend's login endpoint
       const response = await axios.post(`${BASE_URL}/login`, {
         email,
@@ -28,10 +29,10 @@ export const login = createAsyncThunk(
       toast.success("Login Successful");
 
       // Redirect based on user account type
-      if (response.data.user.accountType === "Admin") {
+      if (response?.data?.user.role === "Admin") {
         navigate("/admin/overview");
       } else {
-        navigate("/dashboard/home");
+        navigate("/login");
       }
       return response.data;
     } catch (error) {
