@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import AdminSidebar from "./AdminSidebar.jsx";
-
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTotalEmployees } from "../../slices/employeeSlice.js";
 import {
   IdCardLanyard,
   Tickets,
@@ -13,7 +14,15 @@ import {
   CalendarFold,
   BookCopy,
 } from "lucide-react";
+
 const AdminDashboard = () => {
+  const dispatch = useDispatch();
+  const { total } = useSelector((state) => state.employees);
+
+  useEffect(() => {
+    dispatch(fetchTotalEmployees());
+  }, [dispatch]);
+
   return (
     <div className="relative flex min-h-[calc(100vh-3.5rem)] bg-gray-100">
       <div className="flex h-screen overflow-hidden">
@@ -30,19 +39,19 @@ const AdminDashboard = () => {
               <div className="rounded-md border">
                 <div className="flex p-3 items-center space-x-2 w-[300px] h-[90px] rounded-md z-50 bg-white">
                   <IdCardLanyard />
-                  <span className="flex flex-col">Total staff </span>
+                  <span className="flex flex-col">Total staff {total} </span>
                 </div>
               </div>
               <div className="rounded-md border">
                 <div className="flex p-3  items-center space-x-2 w-[300px] h-[90px] rounded-md z-50 bg-white">
                   <Tickets />
-                  Total ticket
+                  Total ticket {"3"}
                 </div>
               </div>
               <div className="rounded-md border">
                 <div className="flex p-3  items-center space-x-2 w-[300px] h-[90px] rounded-md z-50 bg-white">
                   <Wallet />
-                  Total account balance
+                  Total account balance {"1000000 ₹"}
                 </div>
               </div>
             </div>
@@ -52,20 +61,20 @@ const AdminDashboard = () => {
                 <div className="rounded-md border">
                   <div className="flex p-3 items-center space-x-2 w-[300px] h-[90px] rounded-md z-50 bg-white">
                     <BriefcaseBusiness />
-                    Total job
+                    Total job {"10"}
                   </div>
                 </div>
               </div>
               <div className="rounded-md border">
                 <div className="flex p-3   items-center space-x-2 w-[300px] h-[90px] rounded-md z-50 bg-white">
                   <FolderDot />
-                  Total project
+                  Total project {"25"}
                 </div>
               </div>
               <div className="rounded-md border">
                 <div className="flex p-3  items-center space-x-2  w-[300px] h-[90px] rounded-md z-50 bg-white">
                   <ClockAlert />
-                  total inactive job
+                  total inactive job {"3"}
                 </div>
               </div>
             </div>

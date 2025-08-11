@@ -1,9 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import API from "../axiosInstance"; // use the custom axios
 import { toast } from "react-hot-toast";
-
-// Set correct API base URL
-const BASE_URL = "http://localhost:5000/api/v1/auth"; // Adjust based on backend routes
 
 const initialState = {
   user: localStorage.getItem("user")
@@ -14,38 +11,34 @@ const initialState = {
   error: null,
 };
 
-// Async thunk for login
 export const login = createAsyncThunk(
   "auth/login",
   async ({ email, password, navigate }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${BASE_URL}/login`, {
+      const response = await API.post("/verifyToken/login", {
         email,
         password,
       });
 
       const { user, token } = response.data;
 
-      // Save to localStorage before navigation
+      // Save token and user to localStorage
       localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("token", token);
 
       toast.success("Login Successful");
 
-      // Navigate based on role
       if (user.role === "Admin") {
         navigate("/admin/overview");
       } else {
-        navigate("/employee/dashboard"); // Change to your employee dashboard route
+        navigate("/login");
       }
 
       return { user, token };
     } catch (error) {
-      console.error("Login Error:", error.response?.data || error.message);
-
       const message =
         error.response?.data?.message ||
-        "Login failed. Please check your credentials.";
+        "Login failed. Please check credentials.";
       toast.error(message);
       return rejectWithValue(message);
     }
