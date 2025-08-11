@@ -12,14 +12,26 @@ import Footer from "./components/Footer.jsx";
 import Signup from "./pages/Signup.jsx";
 import ResetPasswordPage from "./pages/ResetPasswordPage.jsx";
 import Employee from "./pages/admin/Dashboard.jsx";
-// import Dashboard from "./pages/AdminDashboard.jsx";
-
-import Dashboard from "./pages/admin/AdminDashboard.jsx";
 import { PATH } from "./common/constant.js";
 import Attendance from "./pages/admin/Attendance.jsx";
+import AdminSidebar from "./pages/admin/AdminSidebar.jsx";
+import Overview from "./pages/admin/Overview.jsx";
+import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
+import { Outlet } from "react-router-dom";
+import Hr from "./pages/admin/Hr.jsx";
+import Recruitment from "./pages/admin/Recruitment.jsx";
+import User from "./pages/admin/staff/User.jsx";
+import EmployeeProfile from "./pages/admin/staff/EmployeeProfile.jsx";
+import Role from "./pages/admin/staff/Role.jsx";
+import SetSalary from "./pages/admin/payslip/SetSalary.jsx";
+import GenerateSalary from "./pages/admin/payslip/GenerateSalary.jsx";
+import Attendancetimesheet from "./pages/admin/timesheet/Attendance.jsx";
+import ManageLeave from "./pages/admin/timesheet/ManageLeave.jsx";
+import AccountList from "./pages/admin/finance/AccountList.jsx";
+import UnauthorizedPage from "./pages/UnauthorizedPage";
+import PrivateRoute from "./components/PrivateRoute";
 
 export default function App() {
-
   return (
     <>
       <Router>
@@ -34,6 +46,40 @@ export default function App() {
                 </>
               }
             />
+
+            <Route path="/admin" element={<AdminDashboard />}>
+              <Route path="overview" element={<Overview />} />
+              <Route path="employees" element={<Employee />} />
+              <Route path="attendance" element={<Attendance />} />
+              <Route path="hr" element={<Hr />} />
+              <Route path="recruitment" element={<Recruitment />} />
+              {/* Staff routes */}
+              <Route path="staff/user" element={<User />} />
+              <Route path="staff/role" element={<Role />} />
+              <Route
+                path="staff/employeeprofile"
+                element={<EmployeeProfile />}
+              />
+              {/* payslip */}
+              <Route path="payslip/set-salary" element={<SetSalary />} />
+              <Route path="payslip/generate" element={<GenerateSalary />} />
+              {/* timesheet */}
+              <Route
+                path="timesheet/attendance"
+                element={<Attendancetimesheet />}
+              />
+
+              <Route
+                path="timesheet/attendance"
+                element={<Attendancetimesheet />}
+              />
+              <Route path="timesheet/manageleave" element={<ManageLeave />} />
+
+              {/* finance */}
+              <Route path="finance/accountlist" element={<AccountList />} />
+            </Route>
+
+            {/*  Static routes */}
             <Route path={`${PATH.FEATURES}`} element={<Features />} />
             <Route path={`${PATH.HOW_IT_WORKS}`} element={<HowItWorks />} />
             <Route path={`${PATH.ABOUT}`} element={<About />} />
@@ -46,9 +92,6 @@ export default function App() {
             />
             <Route path={`${PATH.ERROR}`} element={<Error />} />
 
-            <Route path={`${PATH.ADMIN_OVERVIEW}`} element={<Dashboard />} />
-            <Route path={`${PATH.ADMIN_EMPLOYEES}`} element={<Employee />} />
-            <Route path={`${PATH.ADMIN_ATTENDANCE}`} element={<Attendance />} />
             <Route path="*" element={<Error />} />
           </Routes>
           <Footer />

@@ -34,7 +34,7 @@ const sidebarLinks = [
     children: [
       { name: "User", path: "/admin/staff/user" },
       { name: "Role", path: "/admin/staff/role" },
-      { name: "Employee Profile", path: "/admin/staff/employee" },
+      { name: "Employee Profile", path: "/admin/staff/employeeprofile" },
     ],
   },
   {
@@ -52,7 +52,7 @@ const sidebarLinks = [
     icon: Timer,
     // path: "/admin/timesheet",
     children: [
-      { name: "Timesheet", path: "/admin/attendance/attendance " },
+      { name: "Timesheet", path: "/admin/timesheet/attendance " },
       { name: "Attendance", path: "/admin/timesheet/attendance" },
       { name: "Manage Leave", path: "/admin/timesheet/manageleave" },
     ],

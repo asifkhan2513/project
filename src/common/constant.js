@@ -10,6 +10,7 @@ export const PATH = {
   STATS: "/stats",
   HOME: "/",
   ERROR: "*",
+  ADMIN:"admin",
   ADMIN_OVERVIEW: "/admin/overview",
   ADMIN_DASHBOARD: "/admin/dashboard",
   ADMIN_EMPLOYEES: "/admin/employees",
