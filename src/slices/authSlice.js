@@ -15,7 +15,7 @@ export const login = createAsyncThunk(
   "auth/login",
   async ({ email, password, navigate }, { rejectWithValue }) => {
     try {
-      const response = await API.post("/verifyToken/login", {
+      const response = await API.post("/login", {
         email,
         password,
       });

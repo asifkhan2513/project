@@ -43,7 +43,7 @@ const sidebarLinks = [
     icon: ReceiptIndianRupee,
     children: [
       { name: "Set Salary", path: "/admin/payslip/set-salary" },
-      { name: "Generate", path: "/admin/payslip/generate" },
+      { name: "Payslip", path: "/admin/payslip/payslip" },
     ],
   },
   {

@@ -23,12 +23,13 @@ import User from "./pages/admin/staff/User.jsx";
 import EmployeeProfile from "./pages/admin/staff/EmployeeProfile.jsx";
 import Role from "./pages/admin/staff/Role.jsx";
 import SetSalary from "./pages/admin/payslip/SetSalary.jsx";
-import GenerateSalary from "./pages/admin/payslip/GenerateSalary.jsx";
-import Attendancetimesheet from "./pages/admin/timesheet/Attendance.jsx";
 import ManageLeave from "./pages/admin/timesheet/ManageLeave.jsx";
 import AccountList from "./pages/admin/finance/AccountList.jsx";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
 import PrivateRoute from "./components/PrivateRoute";
+import Payslip from "./pages/admin/payslip/Payslip.jsx";
+import Attendancetimesheet from "./pages/admin/timesheet/Attendance.jsx";
+import EmployeeSetSalary from "./pages/admin/payslip/EmployeeSetSalary.jsx";
 
 export default function App() {
   return (
@@ -61,7 +62,12 @@ export default function App() {
               />
               {/* payslip */}
               <Route path="payslip/set-salary" element={<SetSalary />} />
-              <Route path="payslip/generate" element={<GenerateSalary />} />
+              <Route
+                path="payslip/set-salary/employeesetsalary"
+                element={<EmployeeSetSalary />}
+              />
+
+              <Route path="payslip/payslip" element={<Payslip />} />
               {/* timesheet */}
               <Route
                 path="timesheet/attendance"
