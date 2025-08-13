@@ -1,15 +1,15 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+// ProtectedRoute.jsx
+import { Navigate, Outlet } from "react-router-dom";
+import { useSelector } from "react-redux"; // or your auth context
 
-function PrivateRoute({ children }) {
-  const { token } = useSelector((state) => state.auth);
+export default function ProtectedRoute() {
+  const { isLoggedIn } = useSelector((state) => state.auth);
+  console.log(isLoggedIn);
+  // Example from Redux
 
-  if (token !== null) {
-    return children;
-  } else {
-    return <Navigate to="/login" />;
+  if (!isLoggedIn) {
+    return <Navigate to="/login" replace />;
   }
-}
 
-export default PrivateRoute;
+  return <Outlet />; // Renders child routes
+}
