@@ -7,7 +7,7 @@ export const fetchTotalEmployees = createAsyncThunk(
   "employees/fetchTotalEmployees",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await API.get("/employees/count"); // GET total count API
+      const res = await API.get("/employees/count"); 
       return res.data.total || res.data.count; // adjust according to backend response
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -20,7 +20,7 @@ export const fetchEmployeeList = createAsyncThunk(
   "employees/fetchEmployeeList",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await API.get("/employees"); // GET full employee list API
+      const res = await API.get("/employees"); 
       return res.data.employees; // adjust if backend sends different field
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);

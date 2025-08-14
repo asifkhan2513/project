@@ -48,7 +48,7 @@ const SetSalary = () => {
                 ).padStart(6, "0")}`}</td>
                 <td className="px-6 py-4">{emp?.personalInfo?.name ?? "-"}</td>
                 <td className="px-6 py-4">{emp?.personalInfo?.email ?? "-"}</td>
-                <td className="px-6 py-4">{emp?.personalInfo?.role ?? "-"}</td>
+                <td className="px-6 py-4">{emp?.jobInfo?.jobTitle ?? "-"}</td>
                 <td className="px-6 py-4">
                   ₹{emp?.personalInfo?.salary?.toLocaleString() ?? "0.00"}
                 </td>
