@@ -10,24 +10,52 @@ const initialState = {
 };
 
 // Async thunk to mark attendance on server
+// export const markAttendance = createAsyncThunk(
+//   "attendance/markAttendance",
+//   async (attendanceData, { rejectWithValue }) => {
+//     try {
+//       const res = await API.post("/attendance/mark", {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${localStorage.getItem("token")}`,
+//         },
+//         body: JSON.stringify(attendanceData),
+//       });
+
+//       if (!res.ok) throw new Error("Failed to mark attendance");
+
+//       return await res.json();
+//     } catch (err) {
+//       return rejectWithValue(err.message);
+//     }
+//   }
+// );
+
 export const markAttendance = createAsyncThunk(
   "attendance/markAttendance",
-  async (attendanceData, { rejectWithValue }) => {
+  async ({ employeeId, status }, { rejectWithValue }) => {
     try {
-      const res = await API.post("/attendance/mark", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(attendanceData),
-      });
+      // Log what you're sending to debug
+      console.log("Sending attendance data:", { employeeId, status });
 
-      if (!res.ok) throw new Error("Failed to mark attendance");
+      const res = await API.post(
+        "/attendance/mark",
+        { employeeId, status }, // ✅ exactly what backend expects
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
-      return await res.json();
+      return res.data.attendance; // adjust based on backend response
     } catch (err) {
-      return rejectWithValue(err.message);
+      console.error("Attendance API error:", err.response?.data || err.message);
+      return rejectWithValue(
+        err.response?.data?.message || "Failed to mark attendance"
+      );
     }
   }
 );

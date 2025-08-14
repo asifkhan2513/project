@@ -13,6 +13,7 @@ import {
   Calendar,
   CalendarFold,
   BookCopy,
+  BellOff,
 } from "lucide-react";
 
 const AdminDashboard = () => {
@@ -87,8 +88,10 @@ const AdminDashboard = () => {
                     meeting Schedule
                   </span>
                 </div>
-                <div className="bg-white mt-3 h-[300px] ">
-                  {" "}
+                <div className="bg-white mt-3 h-[300px] flex ">
+                  <span>
+                    <BellOff />
+                  </span>
                   Today's Not Clock In
                 </div>
               </div>

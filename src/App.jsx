@@ -47,7 +47,7 @@ export default function App() {
               }
             />
 
-            <Route path="/admin" element={<AdminDashboard />}>
+              <Route path="/admin" element={<AdminDashboard />}>
               <Route path="overview" element={<Overview />} />
               <Route path="employees" element={<Employee />} />
               <Route path="attendance" element={<Attendance />} />

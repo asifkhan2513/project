@@ -1,8 +1,10 @@
-
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchEmployeeList } from "../../slices/employeeSlice";
-import { markAttendance, setLocalAttendanceStatus } from "../../slices/attendanceSlice";
+import {
+  markAttendance,
+  setLocalAttendanceStatus,
+} from "../../slices/attendanceSlice";
 
 export default function Attendance() {
   const dispatch = useDispatch();
@@ -22,7 +24,6 @@ export default function Attendance() {
   const [attendanceData, setAttendanceData] = useState({});
   const [rowMsg, setRowMsg] = useState({}); // { [employeeId]: "Saved!" | "Error ..." }
 
-  // Fetch employees on mount
   useEffect(() => {
     dispatch(fetchEmployeeList());
   }, [dispatch]);
@@ -43,6 +44,8 @@ export default function Attendance() {
 
   const handleStatusChange = (empId, status) => {
     setAttendanceData((prev) => ({ ...prev, [empId]: status }));
+    console.log("this is ", empId);
+
     // If you want to also store locally in attendance reducer, add a reducer like:
     dispatch(setLocalAttendanceStatus({ employeeId: empId, status }));
   };
@@ -55,6 +58,7 @@ export default function Attendance() {
 
     try {
       const resultAction = dispatch(markAttendance(payload));
+
       if (markAttendance.fulfilled.match(resultAction)) {
         setRowMsg((m) => ({ ...m, [empId]: "Saved successfully" }));
       } else {
@@ -98,7 +102,7 @@ export default function Attendance() {
         <table className="min-w-full text-sm text-left text-gray-700">
           <thead className="bg-gray-100 uppercase text-xs border-b">
             <tr>
-              <th className="px-6 py-3">#</th>
+              <th className="px-6 py-3">ID</th>
               <th className="px-6 py-3">Name</th>
               <th className="px-6 py-3">Email</th>
               <th className="px-6 py-3">Status</th>
