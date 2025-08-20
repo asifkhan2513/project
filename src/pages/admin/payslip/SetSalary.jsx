@@ -69,7 +69,7 @@ const SetSalary = () => {
                 </td>
                 <td className="px-6 py-4">
                   <button
-                    onClick={() => handleOnClick(emp._id)} // ✅ Pass emp._id
+                    onClick={() => handleOnClick(emp?._id)} // ✅ Pass emp._id
                     className="p-2 rounded-md bg-yellow-400 hover:bg-yellow-500 text-white transition"
                   >
                     <Eye size={18} />
