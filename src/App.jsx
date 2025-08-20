@@ -1,5 +1,11 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useParams,
+} from "react-router-dom";
 import { HeroSection } from "./components/HeroSection";
 import { Navbar } from "./components/Navbar";
 import Error from "./pages/Error";
@@ -16,7 +22,6 @@ import { PATH } from "./common/constant.js";
 import Attendance from "./pages/admin/Attendance.jsx";
 import Overview from "./pages/admin/Overview.jsx";
 import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
-import { Outlet } from "react-router-dom";
 import Hr from "./pages/admin/Hr.jsx";
 import Recruitment from "./pages/admin/Recruitment.jsx";
 import User from "./pages/admin/staff/User.jsx";
@@ -32,6 +37,8 @@ import Attendancetimesheet from "./pages/admin/timesheet/Attendance.jsx";
 import EmployeeSetSalary from "./pages/admin/payslip/EmployeeSetSalary.jsx";
 
 export default function App() {
+  const { empId } = useParams();
+  console.log("this app jsx", empId);
   return (
     <>
       <Router>
@@ -47,7 +54,7 @@ export default function App() {
               }
             />
 
-              <Route path="/admin" element={<AdminDashboard />}>
+            <Route path="/admin" element={<AdminDashboard />}>
               <Route path="overview" element={<Overview />} />
               <Route path="employees" element={<Employee />} />
               <Route path="attendance" element={<Attendance />} />
@@ -63,7 +70,7 @@ export default function App() {
               {/* payslip */}
               <Route path="payslip/set-salary" element={<SetSalary />} />
               <Route
-                path="payslip/set-salary/employeesetsalary"
+                path="payslip/set-salary/:empId"
                 element={<EmployeeSetSalary />}
               />
 

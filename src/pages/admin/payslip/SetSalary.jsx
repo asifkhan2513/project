@@ -13,19 +13,27 @@ const SetSalary = () => {
     dispatch(fetchEmployeeList());
   }, [dispatch]);
 
-  function handleonclick() {
-    navigate(`/admin/payslip/set-salary/employeesetsalary`);
+  // console.log(
+  //   "i am coming from set salary",
+  //   list.map((emp) => emp._id)
+  // );
+
+  // ✅ Updated to accept empId
+  function handleOnClick(empId) {
+    navigate(`/admin/payslip/set-salary/${empId}`);
   }
 
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">All Employees</h1>
+
       <div className="flex ml-[75%]">
-        <div className="font-bold">search</div>
+        <div className="font-bold">Search</div>
         <span className="border m-2">
           <input placeholder="Enter Email here" />
         </span>
       </div>
+
       <div className="overflow-x-auto shadow-md rounded-lg">
         <table className="w-full text-sm text-left text-black">
           <thead className="bg-gray-100 text-gray-700 uppercase text-xs">
@@ -40,6 +48,7 @@ const SetSalary = () => {
               <th className="px-6 py-3">Action</th>
             </tr>
           </thead>
+
           <tbody className="divide-y bg-white">
             {list.map((emp, index) => (
               <tr key={emp._id} className="hover:bg-gray-50 transition-colors">
@@ -60,7 +69,7 @@ const SetSalary = () => {
                 </td>
                 <td className="px-6 py-4">
                   <button
-                    onClick={() => handleonclick()}
+                    onClick={() => handleOnClick(emp._id)} // ✅ Pass emp._id
                     className="p-2 rounded-md bg-yellow-400 hover:bg-yellow-500 text-white transition"
                   >
                     <Eye size={18} />

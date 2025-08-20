@@ -15,18 +15,21 @@ export default function Employees() {
     dob: "",
     gender: "",
     email: "",
-    password: "",
     address: "",
+    company: "",
+    jobtitle: "",
+    salary: "",
+    experience: "",
     branch: "",
     department: "",
     designation: "",
     joiningDate: "",
+    netsalary: "",
     accountHolder: "",
     accountNumber: "",
     bankName: "",
     bankCode: "",
     branchLocation: "",
-    taxId: "",
     documents: {},
   });
 
@@ -277,13 +280,7 @@ export default function Employees() {
                     placeholder="Email*"
                     className="w-full border p-2 rounded"
                   />
-                  <input
-                    name="password"
-                    type="password"
-                    onChange={handleChange}
-                    placeholder="Password*"
-                    className="w-full border p-2 rounded"
-                  />
+
                   <textarea
                     name="address"
                     onChange={handleChange}
@@ -293,15 +290,42 @@ export default function Employees() {
                 </div>
               </div>
 
-              {/* Company Detail */}
+              {/* job Detail */}
               <div className="bg-white border rounded p-4 shadow-sm">
-                <h3 className="font-medium mb-4">Company Detail</h3>
+                <h3 className="font-medium mb-4">Job Detail</h3>
                 <div className="space-y-3">
-                  <input
-                    value="ID"
+                  {/* <input
+                    // value="ID"
                     readOnly
                     className="w-full border p-2 rounded bg-gray-100"
+                  /> */}
+                  <input
+                    name="company"
+                    onChange={handleChange}
+                    placeholder="company Name"
+                    className="w-full border p-2 rounded"
                   />
+
+                  <input
+                    name="jobtitle"
+                    onChange={handleChange}
+                    placeholder="job title"
+                    className="w-full border p-2 rounded"
+                  />
+                  <input
+                    name="salary"
+                    onChange={handleChange}
+                    placeholder="salary"
+                    className="w-full border p-2 rounded"
+                  />
+
+                  <input
+                    name="experience"
+                    onChange={handleChange}
+                    placeholder="experience"
+                    className="w-full border p-2 rounded"
+                  />
+
                   <input
                     name="branch"
                     onChange={handleChange}
@@ -326,6 +350,19 @@ export default function Employees() {
                     onChange={handleChange}
                     className="w-full border p-2 rounded"
                   />
+                  <input
+                    name="netsalary"
+                    onChange={handleChange}
+                    placeholder="netsalary*"
+                    className="w-full border p-2 rounded"
+                  />
+                  <input
+                    type="address"
+                    name="address"
+                    placeholder="address"
+                    onChange={handleChange}
+                    className="w-full border p-2 rounded"
+                  />
                 </div>
               </div>
 
@@ -334,10 +371,14 @@ export default function Employees() {
                 <h3 className="font-medium mb-4">Document</h3>
                 <div className="space-y-3">
                   {[
+                    "resume",
                     "aadhar",
                     "pan",
                     "photo",
                     "bankProof",
+                    "offerLetter",
+                    "joiningLetter",
+                    "experienceLetter",
                     "policeVerification",
                   ].map((doc, i) => (
                     <div
@@ -383,12 +424,6 @@ export default function Employees() {
                     name="branchLocation"
                     onChange={handleChange}
                     placeholder="Branch Location"
-                    className="w-full border p-2 rounded"
-                  />
-                  <input
-                    name="taxId"
-                    onChange={handleChange}
-                    placeholder="Tax Payer Id"
                     className="w-full border p-2 rounded"
                   />
                 </div>

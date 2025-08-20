@@ -1,7 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Plus } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { fetchEmployeeList } from "../../../slices/employeeSlice";
 
 const EmployeeSetSalary = () => {
+  const { list } = useSelector((state) => state.employees);
+
+  const { employeeId } = useParams();
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchEmployeeList());
+  }, [dispatch]);
+
+  const currentId = useParams();
+  console.log("currentId", currentId);
+
+  const currentemployee = list.find((emp) =>
+    emp._id === employeeId ? `${emp._id}` : "No employe match"
+  );
+
   return (
     <div className="p-6 space-y-6">
       {/* Breadcrumb */}
@@ -51,9 +70,13 @@ const EmployeeSetSalary = () => {
               </thead>
               <tbody>
                 <tr className="border-t">
-                  <td className="px-4 py-2">SARVESH KUMAR YADAV</td>
+                  <td className="px-4 py-2">
+                    {currentemployee?.personalInfo?.name}
+                  </td>
                   <td className="px-4 py-2">Non Taxable</td>
-                  <td className="px-4 py-2">Mobile</td>
+                  <td className="px-4 py-2">
+                    {currentemployee?.nomineeInfo?.contact}
+                  </td>
                 </tr>
                 <tr className="border-t">
                   <td className="px-4 py-2">SARVESH KUMAR YADAV</td>
@@ -188,6 +211,37 @@ const EmployeeSetSalary = () => {
                   <td className="px-4 py-2">Monthly</td>
                   <td className="px-4 py-2">₹20,000</td>
                   <td className="px-4 py-2">Edit | Delete</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {/* Overtime*/}
+        <div className="bg-white shadow rounded-lg p-4">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="font-bold text-lg">Overtime</h2>
+            <button className="bg-blue-500 hover:bg-blue-600 text-white p-1 rounded">
+              <Plus size={18} />
+            </button>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm text-left">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="px-4 py-2">Employee Name</th>
+                  <th className="px-4 py-2">Overtime Title</th>
+                  <th className="px-4 py-2">Number of days</th>
+                  <th className="px-4 py-2">Hours</th>
+                  <th className="px-4 py-2">Rate</th>
+                  <th className="px-4 py-2">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-t">
+                  <td className="px-4 py-2">SARVESH KUMAR YADAV</td>
+                  <td className="px-4 py-2">Bonus</td>
+                  <td className="px-4 py-2">Percentage</td>
+                  <td className="px-4 py-2">8.33% (₹776.77)</td>
                 </tr>
               </tbody>
             </table>
