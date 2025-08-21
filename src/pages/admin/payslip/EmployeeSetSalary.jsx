@@ -47,7 +47,6 @@ const EmployeeSetSalary = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form Submitted:", formData);
     setIsOpen(false);
     setIsAllowanceOpen(false);
     setIsCommissionOpen(false);
@@ -55,6 +54,7 @@ const EmployeeSetSalary = () => {
     setIsSaturationOpen(false);
     setIsOtherOpen(false);
     setIsOvertime(false);
+    console.log("Form Submitted:", formData);
   };
 
   const { list } = useSelector((state) => state.employees);
@@ -173,52 +173,62 @@ const EmployeeSetSalary = () => {
         )}
 
         {/* Allowance Card */}
-        <div className="bg-white shadow rounded-lg p-4">
+        <div className="bg-white shadow-lg rounded-lg p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="font-bold text-lg">Allowance</h2>
+            <h2 className="font-bold text-xl text-gray-800">Allowance</h2>
             <button
               onClick={() => setIsAllowanceOpen(true)}
-              className="bg-blue-500 hover:bg-blue-600 text-white p-1 rounded"
+              className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md transition duration-200"
             >
               <Plus size={18} />
             </button>
           </div>
           <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left">
+            <table className="w-full text-sm text-left border border-gray-300">
               <thead className="bg-gray-100">
                 <tr>
-                  <th className="px-4 py-2">Employee Name</th>
-                  <th className="px-4 py-2">Allowance Option</th>
-                  <th className="px-4 py-2">Title</th>
-                  <th className="px-4 py-2">Type</th>
-                  <th className="px-4 py-2">Amount</th>
-                  <th className="px-4 py-2">Action</th>
+                  <th className="px-4 py-2 font-medium text-gray-700">
+                    Employee Name
+                  </th>
+                  <th className="px-4 py-2 font-medium text-gray-700">
+                    Allowance Option
+                  </th>
+                  <th className="px-4 py-2 font-medium text-gray-700">Title</th>
+                  <th className="px-4 py-2 font-medium text-gray-700">Type</th>
+                  <th className="px-4 py-2 font-medium text-gray-700">
+                    Amount
+                  </th>
+                  <th className="px-4 py-2 font-medium text-gray-700">
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-t">
-                  <td className="px-4 py-2">
-                    {currentemployee?.personalInfo?.name}
-                  </td>
-                  <td className="px-4 py-2">{formData.allowanceoption}</td>
-                  <td className="px-4 py-2">{formData.allowancetitle}</td>{" "}
-                  <td className="px-4 py-2">{formData.allowancetype}</td>{" "}
-                  <td className="px-4 py-2">{formData.allowanceamount}</td>
-                  <td className="flex">
-                    <span className=" text-red-700 ">
-                      <Trash />
-                    </span>{" "}
-                    ||{" "}
-                    <span className=" text-blue-600">
-                      <Edit></Edit>
-                    </span>
-                  </td>
-                </tr>
-                {/* <tr className="border-t">
-                  <td className="px-4 py-2">SARVESH KUMAR YADAV</td>
-                  <td className="px-4 py-2">Non Taxable</td>
-                  <td className="px-4 py-2">Special Allowance HRA</td>
-                </tr> */}
+                {currentemployee ? (
+                  <tr className="border-t">
+                    <td className="px-4 py-2">
+                      {currentemployee.personalInfo.name}
+                    </td>
+                    <td className="px-4 py-2">{formData.allowanceoption}</td>
+                    <td className="px-4 py-2">{formData.allowancetitle}</td>
+                    <td className="px-4 py-2">{formData.allowancetype}</td>
+                    <td className="px-4 py-2">{formData.allowanceamount}</td>
+                    <td className="flex items-center justify-center space-x-2">
+                      <button className="text-red-600 hover:text-red-800 transition duration-200">
+                        <Trash />
+                      </button>
+                      <button className="text-blue-600 hover:text-blue-800 transition duration-200">
+                        <Edit />
+                      </button>
+                    </td>
+                  </tr>
+                ) : (
+                  <tr>
+                    <td colSpan="6" className="text-center text-gray-500 py-4">
+                      No allowance data available.
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
@@ -229,75 +239,100 @@ const EmployeeSetSalary = () => {
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white rounded-lg shadow-lg w-96 p-6">
               <h3 className="text-lg font-bold mb-4">Create Allowance</h3>
-              <form onSubmit={handleSubmit} className="space-y-3">
+              <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Payslip Type Select */}
-                <label htmlFor="allowanceoption">
-                  allowance option <span className=" text-red-600">*</span>
-                </label>
-                <select
-                  name="allowanceoption"
-                  value={formData.allowanceoption}
-                  onChange={handleChange}
-                  className="w-full border rounded p-2"
-                >
-                  <option value="">Allowance options</option>
-                  <option value="travell">Travell</option>
-                  <option value="nontaxable">Non taxable</option>
-                  <option value="nontaxable">Spacial HRA+FF</option>
-                </select>
+                <div>
+                  <label
+                    htmlFor="allowanceoption"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Allowance Option <span className="text-red-600">*</span>
+                  </label>
+                  <select
+                    id="allowanceoption"
+                    name="allowanceoption"
+                    value={formData.allowanceoption}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Select Allowance Option</option>
+                    <option value="travell">Travel</option>
+                    <option value="nontaxable">Non-Taxable</option>
+                    <option value="specialHRA">Special HRA + FF</option>
+                  </select>
+                </div>
 
                 {/* Title Allowance */}
-                <label htmlFor="allowancetitle">
-                  Title <span className=" text-red-600">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="allowancetitle"
-                  placeholder="allowance title"
-                  value={formData.allowancetitle}
-                  onChange={handleChange}
-                  className="w-full border rounded p-2"
-                />
+                <div>
+                  <label
+                    htmlFor="allowancetitle"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Title <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="allowancetitle"
+                    name="allowancetitle"
+                    placeholder="Allowance Title"
+                    value={formData.allowancetitle}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out"
+                  />
+                </div>
 
                 {/* Allowance Type */}
-                <label htmlFor="allowancetype">
-                  Type <span className=" text-red-600">*</span>
-                </label>
-                <select
-                  name="allowancetype"
-                  value={formData.allowancetype}
-                  onChange={handleChange}
-                  className="w-full border rounded p-2"
-                >
-                  <option value="">Allowance type</option>
-                  <option value="fixed ">Fixed </option>
-                  <option value="percantage ">Percantage</option>
-                </select>
+                <div>
+                  <label
+                    htmlFor="allowancetype"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Type <span className="text-red-600">*</span>
+                  </label>
+                  <select
+                    id="allowancetype"
+                    name="allowancetype"
+                    value={formData.allowancetype}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Select Allowance Type</option>
+                    <option value="fixed">Fixed</option>
+                    <option value="percentage">Percentage</option>
+                  </select>
+                </div>
 
                 {/* Amount */}
-                <label htmlFor="allowanceamount">
-                  Amount <span className=" text-red-600">*</span>
-                </label>
-                <input
-                  type="number"
-                  name="allowanceamount"
-                  placeholder="Amount"
-                  value={formData.allowanceamount}
-                  onChange={handleChange}
-                  className="w-full border rounded p-2"
-                />
+                <div>
+                  <label
+                    htmlFor="allowanceamount"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Amount <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    id="allowanceamount"
+                    name="allowanceamount"
+                    placeholder="Amount"
+                    value={formData.allowanceamount}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
                 {/* Buttons */}
-                <div className="flex justify-end gap-2">
+                <div className="flex justify-end gap-2 mt-4">
                   <button
                     type="button"
                     onClick={() => setIsAllowanceOpen(false)}
-                    className="bg-gray-400 hover:bg-gray-500 text-white px-3 py-1 rounded"
+                    className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded transition duration-200"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition duration-200"
                   >
                     Save
                   </button>
@@ -308,47 +343,58 @@ const EmployeeSetSalary = () => {
         )}
 
         {/* Commission Card */}
-        <div className="bg-white shadow rounded-lg p-4">
+        <div className="bg-white shadow-lg rounded-lg p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="font-bold text-lg">Commission</h2>
+            <h2 className="font-bold text-xl text-gray-800">Commission</h2>
             <button
               onClick={() => setIsCommissionOpen(true)}
-              className="bg-blue-500 hover:bg-blue-600 text-white p-1 rounded"
+              className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md transition duration-200"
             >
               <Plus size={18} />
             </button>
           </div>
           <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left">
+            <table className="w-full text-sm text-left border border-gray-300">
               <thead className="bg-gray-100">
                 <tr>
-                  <th className="px-4 py-2">Employee Name</th>
-                  <th className="px-4 py-2">Title</th>
-                  <th className="px-4 py-2">Type</th>
-                  <th className="px-4 py-2">Amount</th>
-                  <th className="px-4 py-2">Action</th>
+                  <th className="px-4 py-2 font-medium text-gray-700">
+                    Employee Name
+                  </th>
+                  <th className="px-4 py-2 font-medium text-gray-700">Title</th>
+                  <th className="px-4 py-2 font-medium text-gray-700">Type</th>
+                  <th className="px-4 py-2 font-medium text-gray-700">
+                    Amount
+                  </th>
+                  <th className="px-4 py-2 font-medium text-gray-700">
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-t">
-                  <td className="px-4 py-2">
-                    {" "}
-                    {currentemployee?.personalInfo?.name}
-                  </td>
-                  <td className="px-4 py-2">{formData.commisiontitle}</td>
-                  <td className="px-4 py-2">{formData.commisiontype}</td>
-                  <td className="px-4 py-2">{formData.commisionamount}</td>
-                  <td className="flex items-center justify-center mt-4">
-                    {" "}
-                    <span className=" text-red-700 ">
-                      <Trash />
-                    </span>{" "}
-                    ||{" "}
-                    <span className=" text-blue-600">
-                      <Edit></Edit>
-                    </span>
-                  </td>
-                </tr>
+                {currentemployee ? (
+                  <tr className="border-t">
+                    <td className="px-4 py-2">
+                      {currentemployee.personalInfo.name}
+                    </td>
+                    <td className="px-4 py-2">{formData.commissiontitle}</td>
+                    <td className="px-4 py-2">{formData.commissiontype}</td>
+                    <td className="px-4 py-2">{formData.commissionamount}</td>
+                    <td className="flex items-center justify-center space-x-2">
+                      <button className="text-red-600 hover:text-red-800 transition duration-200">
+                        <Trash />
+                      </button>
+                      <button className="text-blue-600 hover:text-blue-800 transition duration-200">
+                        <Edit />
+                      </button>
+                    </td>
+                  </tr>
+                ) : (
+                  <tr>
+                    <td colSpan="5" className="text-center text-gray-500 py-4">
+                      No commission data available.
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
@@ -358,60 +404,81 @@ const EmployeeSetSalary = () => {
         {isCommssionOpen && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white rounded-lg shadow-lg w-96 p-6">
-              <h3 className="text-lg font-bold mb-4">Create commission</h3>
-              <form onSubmit={handleSubmit} className="space-y-3">
+              <h3 className="text-lg font-bold mb-4 text-gray-800">
+                Create Commission
+              </h3>
+              <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Title Commission */}
-                <label htmlFor="commissiontitle">
-                  Title <span className=" text-red-600">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="commissiontitle"
-                  placeholder="Commission title"
-                  value={formData.commissiontitle}
-                  onChange={handleChange}
-                  className="w-full border rounded p-2"
-                />
+                <div>
+                  <label
+                    htmlFor="commissiontitle"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Title <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="commissiontitle"
+                    name="commissiontitle"
+                    placeholder="Commission Title"
+                    value={formData.commissiontitle}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+                  />
+                </div>
 
-                {/* Commision Type */}
-                <label htmlFor="commissiontype">
-                  Type <span className=" text-red-600">*</span>
-                </label>
-                <select
-                  name="commissiontype"
-                  value={formData.commissiontype}
-                  onChange={handleChange}
-                  className="w-full border rounded p-2"
-                >
-                  <option value="">Allowance type</option>
-                  <option value="fixed ">Fixed </option>
-                  <option value="percantage ">Percantage</option>
-                </select>
+                {/* Commission Type */}
+                <div>
+                  <label
+                    htmlFor="commissiontype"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Type <span className="text-red-600">*</span>
+                  </label>
+                  <select
+                    id="commissiontype"
+                    name="commissiontype"
+                    value={formData.commissiontype}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+                  >
+                    <option value="">Select Commission Type</option>
+                    <option value="fixed">Fixed</option>
+                    <option value="percentage">Percentage</option>
+                  </select>
+                </div>
 
                 {/* Amount */}
-                <label htmlFor="commissionamount">
-                  Amount <span className=" text-red-600">*</span>
-                </label>
-                <input
-                  type="number"
-                  name="commissionamount"
-                  placeholder="Amount"
-                  value={formData.commissionamount}
-                  onChange={handleChange}
-                  className="w-full border rounded p-2"
-                />
+                <div>
+                  <label
+                    htmlFor="commissionamount"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Amount <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    id="commissionamount"
+                    name="commissionamount"
+                    placeholder="Amount"
+                    value={formData.commissionamount}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+                  />
+                </div>
+
                 {/* Buttons */}
-                <div className="flex justify-end gap-2">
+                <div className="flex justify-end gap-2 mt-4">
                   <button
                     type="button"
                     onClick={() => setIsCommissionOpen(false)}
-                    className="bg-gray-400 hover:bg-gray-500 text-white px-3 py-1 rounded"
+                    className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-md transition duration-200"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition duration-200"
                   >
                     Save
                   </button>
@@ -422,49 +489,62 @@ const EmployeeSetSalary = () => {
         )}
 
         {/* Loan Card */}
-        <div className="bg-white shadow rounded-lg p-4">
+        <div className="bg-white shadow-lg rounded-lg p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="font-bold text-lg">Loan</h2>
+            <h2 className="font-bold text-xl text-gray-800">Loan</h2>
             <button
               onClick={() => setIsLoanOpen(true)}
-              className="bg-blue-500 hover:bg-blue-600 text-white p-1 rounded"
+              className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md transition duration-200"
             >
               <Plus size={18} />
             </button>
           </div>
           <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left">
+            <table className="w-full text-sm text-left border border-gray-300">
               <thead className="bg-gray-100">
                 <tr>
-                  <th className="px-4 py-2">Employee</th>
-                  <th className="px-4 py-2">Loan Options</th>
-                  <th className="px-4 py-2">Title</th>
-                  <th className="px-4 py-2">Type</th>
-                  <th className="px-4 py-2">Loan Amount</th>
-                  <th className="px-4 py-2">Action</th>
+                  <th className="px-4 py-2 font-medium text-gray-700">
+                    Employee
+                  </th>
+                  <th className="px-4 py-2 font-medium text-gray-700">
+                    Loan Options
+                  </th>
+                  <th className="px-4 py-2 font-medium text-gray-700">Title</th>
+                  <th className="px-4 py-2 font-medium text-gray-700">Type</th>
+                  <th className="px-4 py-2 font-medium text-gray-700">
+                    Loan Amount
+                  </th>
+                  <th className="px-4 py-2 font-medium text-gray-700">
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-t">
-                  <td className="px-4 py-2">
-                    {" "}
-                    {currentemployee?.personalInfo?.name}
-                  </td>
-                  <td className="px-4 py-2">{formData.loanoption}</td>
-                  <td className="px-4 py-2">{formData.loantitle}</td>
-                  <td className="px-4 py-2">{formData.loantype}</td>
-                  <td className="px-4 py-2">₹{formData.loanamount}</td>
-                  <td className="px-4 py-2 flex mt-4">
-                    {" "}
-                    <span className=" text-red-700 ">
-                      <Trash />
-                    </span>{" "}
-                    ||{" "}
-                    <span className=" text-blue-600">
-                      <Edit></Edit>
-                    </span>
-                  </td>
-                </tr>
+                {currentemployee ? (
+                  <tr className="border-t">
+                    <td className="px-4 py-2">
+                      {currentemployee.personalInfo.name}
+                    </td>
+                    <td className="px-4 py-2">{formData.loanoption}</td>
+                    <td className="px-4 py-2">{formData.loantitle}</td>
+                    <td className="px-4 py-2">{formData.loantype}</td>
+                    <td className="px-4 py-2">₹{formData.loanamount}</td>
+                    <td className="flex items-center justify-center space-x-2">
+                      <button className="text-red-600 hover:text-red-800 transition duration-200">
+                        <Trash />
+                      </button>
+                      <button className="text-blue-600 hover:text-blue-800 transition duration-200">
+                        <Edit />
+                      </button>
+                    </td>
+                  </tr>
+                ) : (
+                  <tr>
+                    <td colSpan="6" className="text-center text-gray-500 py-4">
+                      No loan data available.
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
@@ -473,89 +553,125 @@ const EmployeeSetSalary = () => {
         {/* Loan Model  */}
         {isLoanOpen && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white rounded-lg shadow-lg w-[250] p-6">
-              <h3 className="text-lg font-bold mb-4">Create Loan</h3>
-              <form onSubmit={handleSubmit} className="space-y-3">
-                <div className="flex space-x-6">
+            <div className="bg-white rounded-lg shadow-lg w-96 p-6">
+              <h3 className="text-lg font-bold mb-4 text-gray-800">
+                Create Loan
+              </h3>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="flex space-x-4">
                   {/* Title Loan */}
-                  <label htmlFor="loantitle">
-                    Loan Title <span className=" text-red-600">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="loantitle"
-                    placeholder="loan title"
-                    value={formData.loantitle}
-                    onChange={handleChange}
-                    className="w-full border rounded p-2"
-                  />
+                  <div className="flex-1">
+                    <label
+                      htmlFor="loantitle"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Loan Title <span className="text-red-600">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="loantitle"
+                      name="loantitle"
+                      placeholder="Loan Title"
+                      value={formData.loantitle}
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+                    />
+                  </div>
 
-                  {/* loan  Option */}
-                  <label htmlFor="loanoption">
-                    Loan Option <span className=" text-red-600">*</span>
-                  </label>
-                  <select
-                    name="loanoption"
-                    value={formData.loanoption}
-                    onChange={handleChange}
-                    className="w-full border rounded p-2"
-                  >
-                    <option value="">Loan option</option>
-                    <option value="home/car">Home / car</option>
-                    <option value="other">Other</option>
-                  </select>
+                  {/* Loan Option */}
+                  <div className="flex-1">
+                    <label
+                      htmlFor="loanoption"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Loan Option <span className="text-red-600">*</span>
+                    </label>
+                    <select
+                      id="loanoption"
+                      name="loanoption"
+                      value={formData.loanoption}
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+                    >
+                      <option value="">Select Loan Option</option>
+                      <option value="home/car">Home / Car</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
                 </div>
 
-                <div className="flex space-x-6">
-                  {/* loan  Type */}
-                  <label htmlFor="loantype">
-                    Loan Type <span className=" text-red-600">*</span>
-                  </label>
-                  <select
-                    name="loantype"
-                    value={formData.loantype}
-                    onChange={handleChange}
-                    className="w-full border rounded p-2"
-                  >
-                    <option value="">Loan type</option>
-                    <option value="fixed ">Fixed </option>
-                    <option value="percantage ">Percantage</option>
-                  </select>
+                <div className="flex space-x-4">
+                  {/* Loan Type */}
+                  <div className="flex-1">
+                    <label
+                      htmlFor="loantype"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Loan Type <span className="text-red-600">*</span>
+                    </label>
+                    <select
+                      id="loantype"
+                      name="loantype"
+                      value={formData.loantype}
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+                    >
+                      <option value="">Select Loan Type</option>
+                      <option value="fixed">Fixed</option>
+                      <option value="percentage">Percentage</option>
+                    </select>
+                  </div>
 
-                  {/*Loan Amount */}
-                  <label htmlFor="loanamount">
-                    Loan Amount <span className=" text-red-600">*</span>
+                  {/* Loan Amount */}
+                  <div className="flex-1">
+                    <label
+                      htmlFor="loanamount"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Loan Amount <span className="text-red-600">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      id="loanamount"
+                      name="loanamount"
+                      placeholder="Loan Amount"
+                      value={formData.loanamount}
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+                    />
+                  </div>
+                </div>
+
+                {/* Reason */}
+                <div>
+                  <label
+                    htmlFor="loanreason"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Reason
                   </label>
-                  <input
-                    type="number"
-                    name="loanamount"
-                    placeholder="Loan Amount"
-                    value={formData.loanamount}
+                  <textarea
+                    id="loanreason"
+                    name="loanreason"
+                    placeholder="Reason for Loan"
+                    value={formData.loanreason}
                     onChange={handleChange}
-                    className="w-full border rounded p-2"
+                    className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
                   />
                 </div>
-                <label htmlFor="loanreason">Reason</label>
-                <textarea
-                  type="text"
-                  name="loanreason"
-                  placeholder="Loan Amount"
-                  value={formData.loanreason}
-                  onChange={handleChange}
-                  className="w-full border rounded p-2"
-                />
+
                 {/* Buttons */}
-                <div className="flex justify-end gap-2">
+                <div className="flex justify-end gap-2 mt-4">
                   <button
                     type="button"
                     onClick={() => setIsLoanOpen(false)}
-                    className="bg-gray-400 hover:bg-gray-500 text-white px-3 py-1 rounded"
+                    className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-md transition duration-200"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition duration-200"
                   >
                     Save
                   </button>
@@ -566,46 +682,60 @@ const EmployeeSetSalary = () => {
         )}
 
         {/* Saturation Deduction*/}
-        <div className="bg-white shadow rounded-lg p-4">
+        <div className="bg-white shadow-lg rounded-lg p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="font-bold text-lg">Saturation Deduction</h2>
+            <h2 className="font-bold text-xl text-gray-800">
+              Saturation Deduction
+            </h2>
             <button
               onClick={() => setIsSaturationOpen(true)}
-              className="bg-blue-500 hover:bg-blue-600 text-white p-1 rounded"
+              className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md transition duration-200"
             >
               <Plus size={18} />
             </button>
           </div>
           <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left">
+            <table className="w-full text-sm text-left border border-gray-300">
               <thead className="bg-gray-100">
                 <tr>
-                  <th className="px-4 py-2">Employee Name</th>
-                  <th className="px-4 py-2">Title</th>
-                  <th className="px-4 py-2">Type</th>
-                  <th className="px-4 py-2">Amount</th>
-                  <th className="px-4 py-2">Action</th>
+                  <th className="px-4 py-2 font-medium text-gray-700">
+                    Employee Name
+                  </th>
+                  <th className="px-4 py-2 font-medium text-gray-700">Title</th>
+                  <th className="px-4 py-2 font-medium text-gray-700">Type</th>
+                  <th className="px-4 py-2 font-medium text-gray-700">
+                    Amount
+                  </th>
+                  <th className="px-4 py-2 font-medium text-gray-700">
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-t">
-                  <td className="px-4 py-2">
-                    {" "}
-                    {currentemployee?.personalInfo?.name}
-                  </td>
-                  <td className="px-4 py-2">{formData.saturationtitle}</td>
-                  <td className="px-4 py-2">{formData.saturationtype}</td>
-                  <td className="px-4 py-2">{formData.saturationamount}</td>
-                  <td className="px-4 py-2 flex mt-4">
-                    <span className=" text-red-700 ">
-                      <Trash />
-                    </span>{" "}
-                    ||{" "}
-                    <span className=" text-blue-600">
-                      <Edit></Edit>
-                    </span>
-                  </td>
-                </tr>
+                {currentemployee ? (
+                  <tr className="border-t">
+                    <td className="px-4 py-2">
+                      {currentemployee.personalInfo.name}
+                    </td>
+                    <td className="px-4 py-2">{formData.saturationtitle}</td>
+                    <td className="px-4 py-2">{formData.saturationtype}</td>
+                    <td className="px-4 py-2">{formData.saturationamount}</td>
+                    <td className="flex items-center justify-center space-x-2">
+                      <button className="text-red-600 hover:text-red-800 transition duration-200">
+                        <Trash />
+                      </button>
+                      <button className="text-blue-600 hover:text-blue-800 transition duration-200">
+                        <Edit />
+                      </button>
+                    </td>
+                  </tr>
+                ) : (
+                  <tr>
+                    <td colSpan="5" className="text-center text-gray-500 py-4">
+                      No saturation deduction data available.
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
@@ -619,7 +749,7 @@ const EmployeeSetSalary = () => {
               <form onSubmit={handleSubmit} className="space-y-3">
                 <div className="flex space-x-6">
                   {/* deduction  Option */}
-                  <label htmlFor="saturationdeduction">
+                  <label htmlFor="saturationdeduction" className="flex">
                     Deduction Options <span className=" text-red-600">*</span>
                   </label>
                   <select
@@ -640,7 +770,7 @@ const EmployeeSetSalary = () => {
                   </select>
 
                   {/*Saturation Title */}
-                  <label htmlFor="saturationtitle">
+                  <label htmlFor="saturationtitle" className="flex">
                     Title <span className=" text-red-600">*</span>
                   </label>
                   <input
@@ -654,7 +784,7 @@ const EmployeeSetSalary = () => {
                 </div>
                 <div className="flex space-x-6">
                   {/* saturation  Type */}
-                  <label htmlFor="saturationtype">
+                  <label htmlFor="saturationtype" className="flex">
                     Type <span className=" text-red-600">*</span>
                   </label>
                   <select
@@ -669,7 +799,7 @@ const EmployeeSetSalary = () => {
                   </select>
 
                   {/* Amount */}
-                  <label htmlFor="saturationamount">
+                  <label htmlFor="saturationamount" className="flex">
                     Amount <span className=" text-red-600">*</span>
                   </label>
                   <input
@@ -704,46 +834,58 @@ const EmployeeSetSalary = () => {
         )}
 
         {/* Other Payment */}
-        <div className="bg-white shadow rounded-lg p-4">
+        <div className="bg-white shadow-lg rounded-lg p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="font-bold text-lg">Other Payment</h2>
+            <h2 className="font-bold text-xl text-gray-800">Other Payment</h2>
             <button
               onClick={() => setIsOtherOpen(true)}
-              className="bg-blue-500 hover:bg-blue-600 text-white p-1 rounded"
+              className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md transition duration-200"
             >
               <Plus size={18} />
             </button>
           </div>
           <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left">
+            <table className="w-full text-sm text-left border border-gray-300">
               <thead className="bg-gray-100">
                 <tr>
-                  <th className="px-4 py-2">Employee</th>
-                  <th className="px-4 py-2">Title</th>
-                  <th className="px-4 py-2">Type</th>
-                  <th className="px-4 py-2"> Amount</th>
-                  <th className="px-4 py-2">Action</th>
+                  <th className="px-4 py-2 font-medium text-gray-700">
+                    Employee
+                  </th>
+                  <th className="px-4 py-2 font-medium text-gray-700">Title</th>
+                  <th className="px-4 py-2 font-medium text-gray-700">Type</th>
+                  <th className="px-4 py-2 font-medium text-gray-700">
+                    Amount
+                  </th>
+                  <th className="px-4 py-2 font-medium text-gray-700">
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-t">
-                  <td className="px-4 py-2">
-                    {" "}
-                    {currentemployee?.personalInfo?.name}
-                  </td>
-                  <td className="px-4 py-2">{formData.othertitle} </td>
-                  <td className="px-4 py-2">{formData.othertype} </td>
-                  <td className="px-4 py-2">₹{formData.otheramount} </td>
-                  <td className="px-4 py-2 flex  mt-4">
-                    <span className=" text-red-700 ">
-                      <Trash />
-                    </span>{" "}
-                    ||{" "}
-                    <span className=" text-blue-600">
-                      <Edit></Edit>
-                    </span>
-                  </td>
-                </tr>
+                {currentemployee ? (
+                  <tr className="border-t">
+                    <td className="px-4 py-2">
+                      {currentemployee.personalInfo.name}
+                    </td>
+                    <td className="px-4 py-2">{formData.othertitle}</td>
+                    <td className="px-4 py-2">{formData.othertype}</td>
+                    <td className="px-4 py-2">₹{formData.otheramount}</td>
+                    <td className="flex items-center justify-center space-x-2">
+                      <button className="text-red-600 hover:text-red-800 transition duration-200">
+                        <Trash />
+                      </button>
+                      <button className="text-blue-600 hover:text-blue-800 transition duration-200">
+                        <Edit />
+                      </button>
+                    </td>
+                  </tr>
+                ) : (
+                  <tr>
+                    <td colSpan="5" className="text-center text-gray-500 py-4">
+                      No other payment data available.
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
@@ -757,7 +899,7 @@ const EmployeeSetSalary = () => {
               <form onSubmit={handleSubmit} className="space-y-3">
                 <div className="flex space-x-6">
                   {/* Other  Title */}
-                  <label htmlFor="othertitle">
+                  <label htmlFor="othertitle" className="flex">
                     Title <span className=" text-red-600">*</span>
                   </label>
                   <input
@@ -771,7 +913,7 @@ const EmployeeSetSalary = () => {
                 </div>
                 <div className="flex space-x-6">
                   {/* other  Type */}
-                  <label htmlFor="othertype">
+                  <label htmlFor="othertype" className="flex">
                     Type <span className=" text-red-600">*</span>
                   </label>
                   <select
@@ -786,7 +928,7 @@ const EmployeeSetSalary = () => {
                   </select>
 
                   {/* other Amount */}
-                  <label htmlFor="otheramount">
+                  <label htmlFor="otheramount" className="flex">
                     Amount <span className=" text-red-600">*</span>
                   </label>
                   <input
@@ -852,8 +994,9 @@ const EmployeeSetSalary = () => {
                   <td className="px-4 py-2">{formData.overtimetitle}</td>
                   <td className="px-4 py-2">{formData.overtimeday}</td>
                   <td className="px-4 py-2">{formData.overtimerate}</td>
-                  <td className="px-4 py-2 flex mt-4">
-                    <span className=" text-red-700 ">
+                  <td className="px-4 py-2 "></td>
+                  <td className=" px-4 py-2 flex">
+                    <span className=" text-red-700">
                       <Trash />
                     </span>
                     ||
@@ -877,7 +1020,7 @@ const EmployeeSetSalary = () => {
               <form onSubmit={handleSubmit} className="space-y-3">
                 <div className="flex space-x-6">
                   {/* overtime  Title */}
-                  <label htmlFor="overtimetitle">
+                  <label htmlFor="overtimetitle" className="flex">
                     Title <span className=" text-red-600">*</span>
                   </label>
                   <input
@@ -891,7 +1034,7 @@ const EmployeeSetSalary = () => {
                 </div>
                 <div className="flex space-x-6">
                   {/* Number of days* */}
-                  <label htmlFor="overtimeday">
+                  <label htmlFor="overtimeday" className="flex">
                     number of day <span className=" text-red-600">*</span>
                   </label>
                   <input
@@ -904,7 +1047,7 @@ const EmployeeSetSalary = () => {
                   />
 
                   {/* Hours */}
-                  <label htmlFor="overtimehour">
+                  <label htmlFor="overtimehour" className="flex">
                     Hours <span className=" text-red-600">*</span>
                   </label>
                   <input
@@ -917,7 +1060,7 @@ const EmployeeSetSalary = () => {
                   />
 
                   {/* Rate */}
-                  <label htmlFor="overtimerate">
+                  <label htmlFor="overtimerate" className="flex">
                     Rate <span className=" text-red-600">*</span>
                   </label>
                   <input

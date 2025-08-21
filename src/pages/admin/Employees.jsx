@@ -166,7 +166,7 @@ export default function Employees() {
       </div>
 
       {/* Employee Table */}
-      <div className="overflow-x-auto bg-white rounded-lg shadow">
+      {/* <div className="overflow-x-auto bg-white rounded-lg shadow">
         <table className="w-full text-sm text-left text-gray-600">
           <thead className="bg-gray-100 text-gray-700 uppercase text-xs border-b">
             <tr>
@@ -206,6 +206,59 @@ export default function Employees() {
                     <Pencil size={16} />
                   </button>
                   <button className="p-2 rounded-md bg-pink-500 hover:bg-pink-600 text-white transition">
+                    <Trash2 size={16} />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div> */}
+
+      {/* Employee Table */}
+      <div className="overflow-x-auto bg-white rounded-lg shadow-lg transition-transform transform hover:scale-105">
+        <table className="w-full text-sm text-left text-gray-600">
+          <thead className="bg-gray-200 text-gray-800 uppercase text-xs border-b border-gray-300">
+            <tr>
+              <th className="px-6 py-3 font-semibold">Employee ID</th>
+              <th className="px-6 py-3 font-semibold">Name</th>
+              <th className="px-6 py-3 font-semibold">Email</th>
+              <th className="px-6 py-3 font-semibold">Branch</th>
+              <th className="px-6 py-3 font-semibold">Department</th>
+              <th className="px-6 py-3 font-semibold">Designation</th>
+              <th className="px-6 py-3 font-semibold">Date of Joining</th>
+              <th className="px-6 py-3 font-semibold">Action</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200">
+            {list.map((emp, index) => (
+              <tr
+                key={emp._id}
+                className="hover:bg-gray-50 transition-colors duration-200"
+              >
+                <td className="px-6 py-4 font-medium text-gray-900">
+                  {`#EMP${String(index + 1).padStart(6, "0")}`}
+                </td>
+                <td className="px-6 py-4">{emp?.personalInfo?.name ?? "-"}</td>
+                <td className="px-6 py-4">{emp?.personalInfo?.email ?? "-"}</td>
+                <td className="px-6 py-4">{emp?.jobInfo?.branch ?? "-"}</td>
+                <td className="px-6 py-4">{emp?.jobInfo?.department ?? "-"}</td>
+                <td className="px-6 py-4">
+                  {emp?.jobInfo?.designation ?? "-"}
+                </td>
+                <td className="px-6 py-4">
+                  {emp?.jobInfo?.joiningDate
+                    ? new Date(emp.jobInfo.joiningDate).toLocaleDateString(
+                        "en-US",
+                        { month: "short", day: "numeric", year: "numeric" }
+                      )
+                    : "-"}
+                </td>
+                <td className="px-6 py-4 flex gap-2">
+                  <button className="p-2 rounded-md bg-cyan-500 hover:bg-cyan-600 text-white transition duration-200 transform hover:scale-105">
+                    <Pencil size={16} />
+                  </button>
+                  <button className="p-2 rounded-md bg-pink-500 hover:bg-pink-600 text-white transition duration-200 transform hover:scale-105">
                     <Trash2 size={16} />
                   </button>
                 </td>
